@@ -2,8 +2,10 @@
 
 ## Dependency
 
-* libsoup
-* gxml
+On Ubuntu 18.04, need the following:
+
+* `sudo apt install libsoup2.4-dev`
+* `sudo add-apt-repository ppa:inizan-yannick/dev && sudo apt install libgxml-0.16-dev`
 
 ## Usage
 
