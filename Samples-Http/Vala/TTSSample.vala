@@ -34,7 +34,7 @@ void main (string[] args) {
 		var speakMsg = new Soup.Message ("POST", @"$serviceUri");
 		speakMsg.request_body.append_take (ssml.data);
 		speakMsg.request_headers.set_content_type ("application/ssml+xml", null);
-		speakMsg.request_headers.set_content_length (data.length);
+		speakMsg.request_headers.set_content_length (ssml.data.length);
 		speakMsg.request_headers.append ("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm");
 		speakMsg.request_headers.append ("Authorization", @"Bearer $token");
 		speakMsg.request_headers.append ("X-Search-AppId", "07D3234E49CE426DAA29772419F436CA");
