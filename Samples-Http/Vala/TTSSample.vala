@@ -53,10 +53,10 @@ string create_ssml () throws GLib.Error {
 	var doc = new GomDocument ();
 	var root = doc.create_element ("speak");
 	root.set_attribute ("version", "1.0");
-	root.set_attribute_ns ("http://www.w3.org/2000/xmlns", "xml:lang", "en-us");
+	root.set_attribute_ns ("http://www.w3.org/2000/xmlns/", "xml:lang", "en-us");
 	var voice = doc.create_element ("voice");
-	voice.set_attribute_ns ("http://www.w3.org/2000/xmlns", "xml:lang", "en-us");
-	voice.set_attribute_ns ("http://www.w3.org/2000/xmlns", "xml:gender", "Male");
+	voice.set_attribute_ns ("http://www.w3.org/2000/xmlns/", "xml:lang", "en-us");
+	voice.set_attribute_ns ("http://www.w3.org/2000/xmlns/", "xml:gender", "Male");
 	voice.set_attribute ("name", "Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)");
 	var text = doc.create_text_node ("This is a demo to call Microsoft speech service.");
 	voice.append_child (text);
