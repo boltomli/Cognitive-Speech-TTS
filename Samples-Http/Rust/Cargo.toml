@@ -1,0 +1,13 @@
+[package]
+name = "sample"
+version = "0.1.0"
+authors = ["Song Li <songl@outlook.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.31"
+isahc = "0.9.3"
+xml-rs = "0.8.3"
+smol = "0.1.10"
