@@ -17,7 +17,8 @@ exports.Synthesize = function Synthesize(){
     // New unified SpeechService key
     // Free: https://azure.microsoft.com/en-us/try/cognitive-services/?api=speech-services
     // Paid: https://go.microsoft.com/fwlink/?LinkId=872236
-    var apiKey = "Your api key goes here";
+    var apiKey = process.env.MYKEY;
+    var region = process.env.MYREGION;
     var ssml_doc = xmlbuilder.create('speak')
         .att('version', '1.0')
         .att('xml:lang', 'en-us')
@@ -30,7 +31,7 @@ exports.Synthesize = function Synthesize(){
     var post_speak_data = ssml_doc.toString();
 
     request.post({
-        url: 'https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
+        url: 'https://'+region+'.api.cognitive.microsoft.com/sts/v1.0/issueToken',
         headers: {
             'Ocp-Apim-Subscription-Key' : apiKey
         }
@@ -40,7 +41,7 @@ exports.Synthesize = function Synthesize(){
         } else {
             try {
                 request.post({
-                    url: 'https://westus.tts.speech.microsoft.com/cognitiveservices/v1',
+                    url: 'https://'+region+'.tts.speech.microsoft.com/cognitiveservices/v1',
                     body: post_speak_data,
                     headers: {
                         'content-type' : 'application/ssml+xml',
