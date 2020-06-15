@@ -12,21 +12,29 @@ object Main extends App {
   // New unified SpeechService key
   // Free: https://azure.microsoft.com/en-us/try/cognitive-services/?api=speech-services
   // Paid: https://go.microsoft.com/fwlink/?LinkId=872236
-  val tokenUri = "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken"
-  val serviceUri = "https://westus.tts.speech.microsoft.com/cognitiveservices/v1"
-  val key = "myKey"
+  sys.env.get("MYREGION") match {
+    case Some(region) => {
+      val tokenUri = "https://" + region + ".api.cognitive.microsoft.com/sts/v1.0/issueToken"
+      val serviceUri = "https://" + region + ".tts.speech.microsoft.com/cognitiveservices/v1"
+      sys.env.get("MYKEY") match {
+        case Some(key) => {
+          val tokenRequest: HttpRequest = Http(tokenUri).headers(("Ocp-Apim-Subscription-Key", key)).postData("")
+          val response: HttpResponse[String] = tokenRequest.asString
+          val token: String = response.body
 
-  val tokenRequest: HttpRequest = Http(tokenUri).headers(("Ocp-Apim-Subscription-Key", key)).postData("")
-  val response: HttpResponse[String] = tokenRequest.asString
-  val token: String = response.body
-  
-  val synthRequest: HttpRequest = Http(serviceUri).headers(
-    ("Content-type", "application/ssml+xml"),
-    ("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm"),
-    ("Authorization", "Bearer " + token),
-    ("X-Search-AppId", "07D3234E49CE426DAA29772419F436CA"),
-    ("X-Search-ClientID", "1ECFAE91408841A480F00935DC390960")
-  ).postData("<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-us' xml:gender='Male' name='Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)'>This is a demo to call Microsoft speech service.</voice></speak>")
-  val synthesis: String = synthRequest.asString.body
-  print(synthesis.length)
+          val synthRequest: HttpRequest = Http(serviceUri).headers(
+            ("Content-type", "application/ssml+xml"),
+            ("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm"),
+            ("Authorization", "Bearer " + token),
+            ("X-Search-AppId", "07D3234E49CE426DAA29772419F436CA"),
+            ("X-Search-ClientID", "1ECFAE91408841A480F00935DC390960")
+          ).postData("<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-us' xml:gender='Male' name='Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)'>This is a demo to call Microsoft speech service.</voice></speak>")
+          val synthesis: String = synthRequest.asString.body
+          println(synthesis.length)
+        }
+        case None => println("Set key first")
+      }
+    }
+    case None => println("Set region first")
+  }
 }
