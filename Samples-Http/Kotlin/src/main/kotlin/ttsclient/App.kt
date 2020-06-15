@@ -3,9 +3,9 @@ package ttsclient
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
+import io.ktor.client.statement.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.io.*
 import org.dom4j.DocumentHelper
 
 fun main(args: Array<String>) = runBlocking {
@@ -21,8 +21,8 @@ fun main(args: Array<String>) = runBlocking {
         requestBuilder.url(tokenIssuer)
         requestBuilder.header("Ocp-Apim-Subscription-Key", apiKey)
         requestBuilder.body = ""
-        val tokenResp = client.post<HttpResponse>(requestBuilder)
-        val token = tokenResp.content.readUTF8Line()
+        val tokenResp = client.post<HttpStatement>(requestBuilder)
+        val token = tokenResp.execute().content.readUTF8Line()
 
         requestBuilder.url(synthesizer)
         requestBuilder.headers.clear()
@@ -33,9 +33,9 @@ fun main(args: Array<String>) = runBlocking {
         requestBuilder.headers.append("X-Search-ClientID", "1ECFAE91408841A480F00935DC390960")
         requestBuilder.headers.append("User-Agent", "Kotlin")
         requestBuilder.body = ssml()
-        val synthResp = client.post<HttpResponse>(requestBuilder)
+        val synthResp = client.post<HttpStatement>(requestBuilder)
 
-        println(synthResp.status)
+        println(synthResp.execute().status)
     }
 }
 

@@ -26,8 +26,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.dom4j:dom4j:2.1.1")
-    implementation("io.ktor:ktor-client-core:1.0.0")
-    implementation("io.ktor:ktor-client-apache:1.0.0")
+    implementation("io.ktor:ktor-client:1.3.2")
+    implementation("io.ktor:ktor-client-apache:1.3.2")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
