@@ -9,13 +9,14 @@ import kotlinx.coroutines.*
 import org.dom4j.DocumentHelper
 
 fun main(args: Array<String>) = runBlocking {
-    val tokenIssuer = "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken"
-    val synthesizer = "https://westus.tts.speech.microsoft.com/cognitiveservices/v1"
     val apiKey = System.getenv("MYKEY")
+    val region = System.getenv("MYREGION")
 
-    if (apiKey.isNullOrEmpty()) {
-        println("Set MYKEY environment variable first")
+    if (apiKey.isNullOrEmpty() || region.isNullOrEmpty()) {
+        println("Set MYKEY and MYREGION environment variables first")
     } else {
+        val tokenIssuer = "https://$region.api.cognitive.microsoft.com/sts/v1.0/issueToken"
+        val synthesizer = "https://$region.tts.speech.microsoft.com/cognitiveservices/v1"
         val client = HttpClient(Apache)
         val requestBuilder = HttpRequestBuilder {}
         requestBuilder.url(tokenIssuer)
