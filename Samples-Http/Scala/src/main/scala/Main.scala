@@ -6,6 +6,7 @@
 // THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import scalaj.http._
+import scala.xml._
 
 object Main extends App {
   // Note: new unified SpeechService API key and issue token uri is per region
@@ -22,13 +23,14 @@ object Main extends App {
           val response: HttpResponse[String] = tokenRequest.asString
           val token: String = response.body
 
+          val body: xml.Elem = <speak version='1.0' xml:lang='en-us'><voice xml:lang='en-us' xml:gender='Male' name='Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)'>This is a demo to call Microsoft speech service.</voice></speak>
           val synthRequest: HttpRequest = Http(serviceUri).headers(
             ("Content-type", "application/ssml+xml"),
             ("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm"),
             ("Authorization", "Bearer " + token),
             ("X-Search-AppId", "07D3234E49CE426DAA29772419F436CA"),
             ("X-Search-ClientID", "1ECFAE91408841A480F00935DC390960")
-          ).postData("<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-us' xml:gender='Male' name='Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)'>This is a demo to call Microsoft speech service.</voice></speak>")
+          ).postData(body.toString())
           val synthesis: String = synthRequest.asString.body
           println(synthesis.length)
         }
