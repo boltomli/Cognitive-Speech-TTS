@@ -7,17 +7,20 @@
 
 using Soup;
 using GXml;
+using GLib;
 
 void main (string[] args) {
 	try {
-		var issueTokenUri = "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken";
-		var serviceUri = "https://westus.tts.speech.microsoft.com/cognitiveservices/v1";
+		var environ = GLib.Environ.get();
+		var apiKey = GLib.Environ.get_variable(environ, "MYKEY");
+		var region = GLib.Environ.get_variable(environ, "MYREGION");
+		var issueTokenUri = @"https://$region.api.cognitive.microsoft.com/sts/v1.0/issueToken";
+		var serviceUri = @"https://$region.tts.speech.microsoft.com/cognitiveservices/v1";
 
 		// Note: new unified SpeechService API key and issue token uri is per region
 		// New unified SpeechService key
 		// Free: https://azure.microsoft.com/en-us/try/cognitive-services/?api=speech-services
 		// Paid: https://go.microsoft.com/fwlink/?LinkId=872236
-		var apiKey = "myKey";
 
 		// Get token
 		var session = new Session ();
