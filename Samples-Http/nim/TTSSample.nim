@@ -7,15 +7,17 @@
 
 import httpclient
 import xmldom
+import os
 
 # Note: new unified SpeechService API key and issue token uri is per region
 # New unified SpeechService key
 # Free: https://azure.microsoft.com/en-us/try/cognitive-services/?api=speech-services
 # Paid: https://go.microsoft.com/fwlink/?LinkId=872236
 let
-  key = "Your API key here"
-  issueTokenUri = "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken"
-  serviceUri = "https://westus.tts.speech.microsoft.com/cognitiveservices/v1"
+  key = getEnv("MYKEY")
+  region = getEnv("MYREGION")
+  issueTokenUri = "https://" & region & ".api.cognitive.microsoft.com/sts/v1.0/issueToken"
+  serviceUri = "https://" & region & ".tts.speech.microsoft.com/cognitiveservices/v1"
   client = newHttpClient()
 
 # Get token
