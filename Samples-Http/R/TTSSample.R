@@ -22,13 +22,13 @@ addChildren(ssml, speak)
 # Free: https://azure.microsoft.com/en-us/try/cognitive-services/?api=speech-services
 # Paid: https://go.microsoft.com/fwlink/?LinkId=872236
 library(httr)
-issueTokenUri <- "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken";
-key <- "myKey"
+key <- Sys.getenv(c("MYREGION", "MYKEY"))
+issueTokenUri <- paste0("https://", key[[1]], ".api.cognitive.microsoft.com/sts/v1.0/issueToken");
 tokenResult <- POST(issueTokenUri,
-                    add_headers("Ocp-Apim-Subscription-Key" = key),
+                    add_headers("Ocp-Apim-Subscription-Key" = key[[2]]),
                     body = "")
 token <- content(tokenResult, as = "text")
-serviceUri <- "https://westus.tts.speech.microsoft.com/cognitiveservices/v1";
+serviceUri <- paste0("https://", key[[1]], ".tts.speech.microsoft.com/cognitiveservices/v1");
 synthesisResult <- POST(serviceUri,
                         content_type("application/ssml+xml"),
                         add_headers(
