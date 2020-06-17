@@ -9,8 +9,11 @@
 # New unified SpeechService key
 # Free: https://azure.microsoft.com/en-us/try/cognitive-services/?api=speech-services
 # Paid: https://go.microsoft.com/fwlink/?LinkId=872236
-$tokenHeader = @{"Ocp-Apim-Subscription-Key"="Your API key here"}
-$tokenReq = Invoke-WebRequest -Uri "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken" -Headers $tokenHeader -Body "" -Method POST
+$apiKey = $env:MYKEY
+$region = $env:MYREGION
+$tokenHeader = @{"Ocp-Apim-Subscription-Key"=$apiKey}
+$tokenUri = "https://" + $region + ".api.cognitive.microsoft.com/sts/v1.0/issueToken"
+$tokenReq = Invoke-WebRequest -Uri $tokenUri -Headers $tokenHeader -Body "" -Method POST
 $token = New-Object System.String($tokenReq.Content, 0, $tokenReq.Content.Length)
 
 $ssml = "<speak version='1.0' xml:lang='en-us'><voice name='Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)' xml:gender='Male' xml:lang='en-US'>This is a demo to call microsoft text to speech service.</voice></speak>"
@@ -20,7 +23,8 @@ $synthHeaders.Add("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm")
 $synthHeaders.Add("Authorization", "Bearer " + $token)
 $synthHeaders.Add("X-Search-AppId", "07D3234E49CE426DAA29772419F436CA")
 $synthHeaders.Add("X-Search-ClientID", "1ECFAE91408841A480F00935DC390960")
-$synthReq = Invoke-WebRequest -Uri "https://westus.tts.speech.microsoft.com/cognitiveservices/v1" -Headers $synthHeaders -Body $ssml -Method POST
+$synthUri = "https://" + $region + ".tts.speech.microsoft.com/cognitiveservices/v1"
+$synthReq = Invoke-WebRequest -Uri $synthUri -Headers $synthHeaders -Body $ssml -Method POST
 $synthesis = $synthReq.Content
 
 $synthesis.Length
