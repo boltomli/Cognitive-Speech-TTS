@@ -13,6 +13,6 @@ On Ubuntu 18.04, need the following:
 1. Compile and run (package versions may vary, change them according to installed ones):
 
 ```shell
-valac --pkg libsoup-2.4 --pkg gxml-0.16 TTSSample.vala
+valac --pkg libsoup-2.4 --pkg gxml-0.18 TTSSample.vala
 ./TTSSample
 ```

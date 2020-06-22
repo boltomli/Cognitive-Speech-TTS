@@ -65,5 +65,5 @@ string create_ssml () throws GLib.Error {
 	voice.append_child (text);
 	root.append_child (voice);
 	doc.append_child (root);
-	return (doc as GomDocument).write_string ();
+	return doc.write_string ();
 }
