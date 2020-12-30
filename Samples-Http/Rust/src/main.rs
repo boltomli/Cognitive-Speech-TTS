@@ -1,5 +1,6 @@
 use std::io::Write;
 use xml::writer::XmlEvent;
+use tokio_compat_02::FutureExt;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -14,6 +15,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let token = client.post(&token_uri)
         .headers(headers)
         .send()
+        .compat()
         .await?
         .text()
         .await?;
@@ -47,6 +49,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .headers(headers)
         .body(ssml)
         .send()
+        .compat()
         .await?
         .bytes()
         .await?;
